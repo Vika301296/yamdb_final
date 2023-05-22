@@ -1,8 +1,10 @@
 from django.core.management.base import BaseCommand
-import csv
-from reviews.models import Categories, Genres, Title, Review, Comment
-from users.models import CustomUser
 
+import csv
+
+from reviews.models import Categories, Genres, Title, Review, Comment
+
+from users.models import CustomUser
 
 CSV_CATEGORIESS = 'static/data/category.csv'
 CSV_GENRES = 'static/data/genre.csv'
