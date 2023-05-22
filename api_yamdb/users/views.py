@@ -1,17 +1,17 @@
-from django.shortcuts import get_object_or_404
-from rest_framework.decorators import api_view, permission_classes, action
+from api.permissions import IsAdminCustomUser
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
+from django.shortcuts import get_object_or_404
+from rest_framework import filters, permissions, status, viewsets
+from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.response import Response
-from rest_framework import status, permissions, viewsets, filters
 from rest_framework_simplejwt.tokens import AccessToken
-from api.permissions import IsAdminCustomUser
+
 from api_yamdb.settings import DEFAULT_FROM_EMAIL
 
 from .models import CustomUser
-from .serializers import (ConfirmationSerializer, CustomUserSerializer,
-                          CustomUserPATCHSerializer,
-                          ConfirmationCodeSerializer)
+from .serializers import (ConfirmationCodeSerializer, ConfirmationSerializer,
+                          CustomUserPATCHSerializer, CustomUserSerializer)
 
 
 @api_view(['POST'])
@@ -19,7 +19,6 @@ from .serializers import (ConfirmationSerializer, CustomUserSerializer,
 def get_confirmation_code(request):
     serializer = ConfirmationSerializer(data=request.data)
     if not serializer.is_valid():
-        # тут подстроили вывод под pytest
         return Response(
             {
                 "email": ["некорректно заполнено"],
